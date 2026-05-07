@@ -55,10 +55,14 @@ async def run_scan(
     db: AsyncSession = Depends(get_db),
 ):
     scan_id = str(uuid.uuid4())
-    user_allowlist = (
-        current_user.allowlist or []
-        if current_user.allowlist else []
-    )
+    raw_allowlist = current_user.allowlist or []
+
+    if isinstance(raw_allowlist, str):
+        user_allowlist = [t.strip() for t in raw_allowlist.split(",") if t.strip()]
+    elif isinstance(raw_allowlist, list):
+        user_allowlist = [str(t).strip() for t in raw_allowlist if str(t).strip()]
+    else:
+        user_allowlist = []
 
     
     await _check_rate_limit(current_user, db)
