@@ -1,0 +1,1 @@
+User query -> GPT tool proposal -> MCP schema -> validation layer -> Docker/Kali execution -> XML parser -> summary -> audit log
